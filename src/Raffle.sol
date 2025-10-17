@@ -21,12 +21,9 @@
 // private
 // view & pure functions
 
-
-
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.19;
-
 
 /**
  * @title A sample Raffle Contract
@@ -34,7 +31,6 @@ pragma solidity ^0.8.19;
  * @notice This contract is for creating a sample raffle
  * @dev It implements Chainlink VRFv2.5 and Chainlink Automation
  */
-
 
 contract Raffle {
     /**
@@ -44,17 +40,18 @@ contract Raffle {
     error Raffle_sendMoreToEnterRaffle();
 
     uint256 private immutable i_entranceFee;
-    constructor(uint256 entranceFee){
-        i_entranceFee=entranceFee;
+
+    constructor(uint256 entranceFee) {
+        i_entranceFee = entranceFee;
     }
 
-    function enterRaffle() public payable{
+    function enterRaffle() public payable {
         // revert(msg.value<i_entranceFee , "Not enough eth").       but this cost more gas
-        if(msg.value<i_entranceFee){
+        if (msg.value < i_entranceFee) {
             revert Raffle_sendMoreToEnterRaffle();
         }
 
-        //in the latest versuin of solidity there is one more efficient method 
+        //in the latest versuin of solidity there is one more efficient method
         //revert (msg.value<i_entranceFee , Raffle_sendMoreToEnterRaffle()). this is the most cost efficient
     }
 
@@ -64,7 +61,7 @@ contract Raffle {
      * Getter Functions
      */
 
-    function getEntranceFee() external view returns (uint256){
+    function getEntranceFee() external view returns (uint256) {
         return i_entranceFee;
     }
 }
