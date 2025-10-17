@@ -1,3 +1,28 @@
+// Layout of the contract file:
+// version
+// imports
+// errors
+// interfaces, libraries, contract
+
+// Inside Contract:
+// Type declarations
+// State variables
+// Events
+// Modifiers
+// Functions
+
+// Layout of Functions:
+// constructor
+// receive function (if exists)
+// fallback function (if exists)
+// external
+// public
+// internal
+// private
+// view & pure functions
+
+
+
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.19;
@@ -12,12 +37,26 @@ pragma solidity ^0.8.19;
 
 
 contract Raffle {
+    /**
+     * errors
+     */
+
+    error Raffle_sendMoreToEnterRaffle();
+
     uint256 private immutable i_entranceFee;
     constructor(uint256 entranceFee){
         i_entranceFee=entranceFee;
     }
 
-    function enterRaffle() public payable{}
+    function enterRaffle() public payable{
+        // revert(msg.value<i_entranceFee , "Not enough eth").       but this cost more gas
+        if(msg.value<i_entranceFee){
+            revert Raffle_sendMoreToEnterRaffle();
+        }
+
+        //in the latest versuin of solidity there is one more efficient method 
+        //revert (msg.value<i_entranceFee , Raffle_sendMoreToEnterRaffle()). this is the most cost efficient
+    }
 
     function pickWinner() public {}
 
