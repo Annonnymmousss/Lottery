@@ -40,6 +40,10 @@ contract Raffle {
     error Raffle_sendMoreToEnterRaffle();
 
     uint256 private immutable i_entranceFee;
+    address payable[] private s_players;
+
+    /* events */
+    event RaffleEntered(address indexed player);
 
     constructor(uint256 entranceFee) {
         i_entranceFee = entranceFee;
@@ -50,10 +54,13 @@ contract Raffle {
         if (msg.value < i_entranceFee) {
             revert Raffle_sendMoreToEnterRaffle();
         }
-
-        //in the latest versuin of solidity there is one more efficient method
+        //in the latest version of solidity there is one more efficient method
         //revert (msg.value<i_entranceFee , Raffle_sendMoreToEnterRaffle()). this is the most cost efficient
+
+        s_players.push(payable(msg.sender));
+        emit RaffleEntered(msg.sender);
     }
+
 
     function pickWinner() public {}
 
